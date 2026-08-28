@@ -54,8 +54,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _launchTermux() async {
-    final Uri url = Uri.parse('intent:#Intent;component=com.termux/.app.TermuxActivity;end');
+    void _launchTermux() async {
+    final Uri url = Uri.parse('android-app://com.termux');
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Не удалось запустить Termux. Проверьте, установлено ли приложение.')),
