@@ -30,8 +30,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _inputController = TextEditingController(text: 'insp');
-  final _outputController = TextEditingController(text: 'png');
+  final _inputController = TextEditingController(text: 'mp4');
+  final _outputController = TextEditingController(text: 'mp4');
   
   double _yaw = 0.0;
   double _pitch = 0.0;
