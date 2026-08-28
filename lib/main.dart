@@ -30,14 +30,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _inputController = TextEditingController(text: 'mp4');
-  final _outputController = TextEditingController(text: 'mp4');
+  final _inputController = TextEditingController(text: 'insp'); // Входное расширение по умолчанию
+  final _outputController = TextEditingController(text: 'png');  // Выходное расширение по умолчанию
   
   double _yaw = 0.0;
   double _pitch = 0.0;
   double _roll = 0.0;
 
-    String _generateScript() {
+      String _generateScript() {
     final ext1 = _inputController.text;
     final ext2 = _outputController.text;
     
@@ -47,7 +47,9 @@ class _HomePageState extends State<HomePage> {
     // Крен (Roll) оставляем целым числом
     final rollVal = _roll.round().toString();
 
-    return 'for f in *.\$ext1; do ffmpeg -i "\$f" -filter_complex "[v:0]crop=iw/2:ih:0:0,v360=input=fisheye:output=hequirect:h_fov=200:v_fov=200:yaw=0:pitch=0:roll=0[left_eye]; [v:0]crop=iw/2:ih:iw/2:0,v360=input=fisheye:output=hequirect:h_fov=200:v_fov=200:yaw=$yawVal:pitch=$pitchVal:roll=$rollVal[right_eye]; [left_eye][right_eye]hstack=inputs=2[sbs]" -map "[sbs]" -y "\${f%.\$ext1}_sbs_180.\$ext2"; done';
+    // Убраны слэши \ перед $ext1 и $ext2, чтобы значения подставлялись.
+    // Оставлен слэш \$f, так как $f должен остаться текстом для самого FFmpeg в Termux.
+    return 'for f in *.$ext1; do ffmpeg -i "\$f" -filter_complex "[v:0]crop=iw/2:ih:0:0,v360=input=fisheye:output=hequirect:h_fov=200:v_fov=200:yaw=0:pitch=0:roll=0[left_eye]; [v:0]crop=iw/2:ih:iw/2:0,v360=input=fisheye:output=hequirect:h_fov=200:v_fov=200:yaw=$yawVal:pitch=$pitchVal:roll=$rollVal[right_eye]; [left_eye][right_eye]hstack=inputs=2[sbs]" -map "[sbs]" -y "\${f%.$ext1}_sbs_180.$ext2"; done';
   }
 
   void _copyToClipboard() {
